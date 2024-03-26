@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
@@ -33,35 +34,31 @@ import (
 //			gfb.UpdateScreen(fb)
 //		}
 //	}
-const welcomeru = "Добро пожаловать в программу установки SerfOS! \nВыберите язык системы используя стрелки. Нажмите Enter для продолжения."
-const welcomeen = "Welcome to the SerfOS Installer! \nselect the system language using the arrows. Press Enter to continue."
+const welcomeru = "Добро пожаловать в программу установки ElyzionOS! \nВыберите язык системы используя стрелки. Нажмите Enter для продолжения."
+const welcomeen = "Welcome to the ElyzionOS Installer! \nselect the system language using the arrows. Press Enter to continue."
 const Licenceru = `Лицензионное соглашение!
 
-Здравствуйте, благодарим за выбор SerfOS.
-Данный продукт частично* распространяется по лицензии
+Здравствуйте, благодарим за выбор ElyzionOS.
+Данный продукт распространяется по лицензии
 GNU General Public License 3.0
 Более подробно вы можете прочитать здесь:
 https://www.gnu.org/licenses/gpl-3.0.html#license-text
 
-*под раздел частично попадает: ядро Linux, графическая среда
-Gnome и входящее в дистрибутив Linux программное обеспечение,
-за исключением продуктов Crystal Project (калькулятор, блокнот).
-
-Также, перед использованием программных продуктов Crystal,
-пожалуйста, ознакомьтесь с условиями настоящего 
-лицензионного соглашения.
+Лицензионное соглашение для продуктов Crystal Project:
+(Блокнот, Калькулятор, Elyzion Player, Антивирусное ПО ESecurity, Генератор паролей KeyGen)
+Пожалуйста, ознакомьтесь с условиями настоящего лицензионного соглашения.
 Пользуясь программными продуктами Crystal,
 Вы соглашаетесь с тем, что:
-А) Программа имеет закрытый исходный код и вы не имеете право изменять
-его или как-либо модифицировать.
-Б) Программа предоставляется "как есть", без гарантийных обязательств,
-явных или подразумеваемых, либо предусмотренных законодательством, 
-включая, но не ограничиваясь этим, гарантии качества,
-производительности, пригодности для продажи или для определенной цели.
+А) Программа имеет закрытый исходный код и вы не имеете право изменять его или 
+как-либо модифицировать.
+Б) Программа предоставляется "как есть", без гарантийных обязательств, явных или
+подразумеваемых, либо предусмотренных законодательством, 
+включая, но не ограничиваясь этим, гарантии качества, производительности,
+пригодности для продажи или для определенной цели.
 В) Также не предоставляется никаких гарантий, созданных в результате
 заключения сделки, использования или продаж. Crystal Project не 
 гарантирует бесперебойную, своевременную и безошибочную работу 
-программного обеспечения. ни при каких Crystal Project не несут 
+программного обеспечения. Ни при каких условиях Crystal Project не несут 
 ответственность за ущерб или убытки, вызванные использованием или 
 невозможностью использования данного продукта. 
 Г) ПО по данному соглашению предоставляется без явных или 
@@ -71,57 +68,57 @@ Gnome и входящее в дистрибутив Linux программное
 Если вы не согласны с условиями лицензии,
 немедленно прекратите использование данного ПО!
 
-Авторы дистрибутива:
-Игнатьев Илья
-Егор aka Linux_Tester
-В дистрибутиве использованы обои
-Daniel Myslivets https://github.com/myslivets`
+Дополнение: Программа установки .epf приложений "AppInstaller", также 
+распространяется по лицензии GNU General Public License 3.0.
+
+Разработчики:
+Игнатьев Илья; Савин Ярослав; Чакилев Арсений
+Особая благодарность за помощь в работе над "AppInstaller" и программой установки:
+Егору Петрухину aka Linux_Tester`
 const Licenceen = `License Agreement!
 
-Hello, thank you for choosing SerfOS.
-This product is partially* distributed under license
+Hello, thank you for choosing ElyzionOS.
+This product is distributed under the license
 GNU General Public License 3.0
 You can read more details here:
 https://www.gnu.org/licenses/gpl-3.0.html#license-text
 
-*under the section partially falls: Linux kernel, graphical environment
-Gnome and the software included in the Linux distribution,
-with the exception of Crystal Project products (calculator, notepad).
-
-Also, before using Crystal software products,
-please read the terms of this
-license agreement.
-Using Crystal software products,
+License agreement for Crystal Project products:
+(Notepad, Calculator, Elyzion Player, ESecurity Antivirus Software, KeyGen Password Generator)
+Please read the terms of this license agreement.
+By using the software products Crystal,
 You agree that:
-A) The Program has closed source code and you have no right to change
-it or modify it in any way.
-B) The Program is provided "as is", without warranty,
-express or implied, or statutory,
-including, but not limited to, warranties of quality,
-performance, merchantability or fitness for a particular purpose.
-C) There are also no guarantees created as a result
-of the conclusion of the transaction, use or sales. Crystal Project is not 
-guarantees uninterrupted, timely and error-free operation
-of the software. Under no circumstances will Crystal Project be
-liable for damages or losses caused by the use or
+A) The program is closed source and you may not modify it or 
+modify it in any way.
+B) The Program is provided "as is", without warranty, express or implied, or by law.
+implied or statutory, 
+including, but not limited to, warranties of quality, performance,
+merchantability, or fitness for a particular purpose.
+B) Nor are any warranties created as a result of the
+transaction, use or sale. Crystal Project does not 
+warrant the uninterrupted, timely or error-free operation of the 
+of the software. In no event shall Crystal Project be liable 
+responsibility for any damage or loss caused by the use or 
 inability to use this product. 
-D) The software under this agreement is provided without express or
-implied warranties of non-infringement, and the developer does not
-guarantee non-infringement of any patents, copyrights, trade
-secrets or other proprietary rights.
+D) The software under this agreement is provided without express or 
+implied warranties of non-infringement, and the developer makes no warranty of non-infringement of any patents, patents, or other intellectual property rights. 
+no warranty of non-infringement of any patents, copyrights, trade
+trade secrets or other proprietary rights.
 If you do not agree to the terms of the license,
-immediately stop using this software!
+stop using this software immediately!
 
-Distribution authors:
-Ignatiev Ilya
-Egor aka Linux_Tester
-Wallpaper is used in the distribution
-Daniel Myslivets https://github.com/myslivets`
+Addendum: The .epf application installer "AppInstaller" is also licensed under the GNU General Public License. 
+is also distributed under the GNU General Public License 3.0.
+
+Developers:
+Ilya Ignatyev; Yaroslav Savin; Arseny Chakilev
+Special thanks for help with "AppInstaller" and the installer:
+Egor Petrukhin aka Linux_Tester`
 
 func showmenu(elem int, menu []string, title string) {
 	fmt.Printf("\033c")
 	// logo()
-	fmt.Printf("\x1b[36m" + title + "\x1b[0m\n")
+	fmt.Printf("\x1b[35m" + title + "\x1b[0m\n")
 	for i := 0; i < len(menu); i++ {
 		if elem == i {
 			fmt.Printf("\x1b[47;30m" + menu[i] + "\x1b[0m\n")
@@ -255,11 +252,16 @@ func showLicense(language string) {
 func partiton(language string) string {
 	title := ""
 	drive := ""
+	waiter := ""
+
 	if language == "ru" {
 		title = "Выберите диск для разметки"
+		waiter = "Пожалуйста подождите 20 секунд."
 
 	} else {
 		title = "Select disk drive for partitioning"
+		waiter = "Please wait 20 seconds."
+
 	}
 	_ = title
 	devices, _ := filepath.Glob("/dev/[sS]d[a-zA-Z]")
@@ -317,6 +319,9 @@ func partiton(language string) string {
 
 		return false, nil // Return false to continue listening
 	})
+	fmt.Printf("\033c")
+	fmt.Print(waiter)
+	time.Sleep(20 * time.Second)
 	return drive
 
 }
@@ -334,7 +339,6 @@ func partboot(language string, instdrive string) string {
 		} else {
 			devices, _ = filepath.Glob(instdrive + "p[0-9]") // Присваиваем значение внутри блока кода else
 		}
-
 		title := ""
 		if language == "ru" {
 			title = "Выберите раздел для загрузчика (fat32)"
@@ -393,10 +397,12 @@ func partsel(language string, instdrive string) string {
 	}
 
 	title := ""
+
 	if language == "ru" {
 		title = "Выберите раздел для установки системы"
 
 	} else {
+
 		title = "Select partition for installation system"
 	}
 	drive := ""
@@ -453,6 +459,37 @@ func sysinstall(language string, instpart string, bootpart string, instdrive str
 	// Запускаем команду
 	_ = cmd.Start()
 	_ = cmd.Wait()
+
+	args = strings.Split("tune2fs"+" "+"-O"+" "+"^metadata_csum_seed"+" "+instpart, " ")
+	cmd = exec.Command(args[0], args[1], args[2], args[3])
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+
+	// Запускаем команду
+	_ = cmd.Start()
+	_ = cmd.Wait()
+
+	args = strings.Split("tune2fs"+" "+"-O"+" "+"^orphan_file"+" "+instpart, " ")
+	cmd = exec.Command(args[0], args[1], args[2], args[3])
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+
+	// Запускаем команду
+	_ = cmd.Start()
+	_ = cmd.Wait()
+
+	args = strings.Split("e2fsck"+" "+"-f"+" "+instpart, " ")
+	cmd = exec.Command(args[0], args[1], args[2])
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+
+	// Запускаем команду
+	_ = cmd.Start()
+	_ = cmd.Wait()
+
 	args = strings.Split("mount"+" "+instpart+" "+"/mnt", " ")
 	cmd = exec.Command(args[0], args[1], args[2])
 	cmd.Stdout = os.Stdout
@@ -512,7 +549,7 @@ func sysinstall(language string, instpart string, bootpart string, instdrive str
 		_ = cmd.Start()
 		_ = cmd.Wait()
 
-		cmd = exec.Command("arch-chroot", "/mnt", "grub-install")
+		cmd = exec.Command("grub-install", "--boot-directory=/mnt/boot", instdrive, "--bootloader-id=elyzionos")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		cmd.Stdin = os.Stdin
@@ -532,6 +569,8 @@ func sysinstall(language string, instpart string, bootpart string, instdrive str
 		_ = cmd.Wait()
 		args = strings.Split("arch-chroot /mnt grub-install "+instdrive, " ")
 		cmd = exec.Command(args[0], args[1], args[2], args[3])
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, "PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/usr/games:/sbin\"")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		cmd.Stdin = os.Stdin
@@ -543,6 +582,8 @@ func sysinstall(language string, instpart string, bootpart string, instdrive str
 	}
 	args = strings.Split("arch-chroot /mnt update-grub ", " ")
 	cmd = exec.Command(args[0], args[1], args[2])
+	cmd.Env = os.Environ()
+	cmd.Env = append(cmd.Env, "PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/usr/games:/sbin\"")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
