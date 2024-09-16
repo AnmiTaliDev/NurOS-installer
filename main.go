@@ -34,31 +34,32 @@ import (
 //			gfb.UpdateScreen(fb)
 //		}
 //	}
-const welcomeru = "Добро пожаловать в программу установки ElyzionOS! \nВыберите язык системы используя стрелки. Нажмите Enter для продолжения."
-const welcomeen = "Welcome to the ElyzionOS Installer! \nselect the system language using the arrows. Press Enter to continue."
+const welcomeru = "Добро пожаловать в программу установки NurOS! \nВыберите язык системы используя стрелки. Нажмите Enter для продолжения."
+const welcomeen = "Welcome to the NurOS Installer! \nselect the system language using the arrows. Press Enter to continue."
+const welcomekz = "NurOS орнату бағдарламасына қош келдіңіз! \пжүйе тілін таңдаңыз көрсеткілерді қолдану. Жалғастыру үшін Enter пернесін басыңыз."
 const Licenceru = `Лицензионное соглашение!
 
-Здравствуйте, благодарим за выбор ElyzionOS.
+Здравствуйте, благодарим за выбор NurOS.
 Данный продукт распространяется по лицензии
 GNU General Public License 3.0
 Более подробно вы можете прочитать здесь:
 https://www.gnu.org/licenses/gpl-3.0.html#license-text
 
-Лицензионное соглашение для продуктов Crystal Project:
-(Блокнот, Калькулятор, Elyzion Player, Антивирусное ПО ESecurity, Генератор паролей KeyGen)
+Лицензионное соглашение для продуктов DeltaUI:
+(Калькулятор, beta-версия Браузера OpenSerfing)
 Пожалуйста, ознакомьтесь с условиями настоящего лицензионного соглашения.
-Пользуясь программными продуктами Crystal,
+Пользуясь программными продуктами AnmiTali DeltaUI,
 Вы соглашаетесь с тем, что:
-А) Программа имеет закрытый исходный код и вы не имеете право изменять его или 
+А) Программа имеет открытый исходный код и вы имеете право изменять его или 
 как-либо модифицировать.
 Б) Программа предоставляется "как есть", без гарантийных обязательств, явных или
 подразумеваемых, либо предусмотренных законодательством, 
 включая, но не ограничиваясь этим, гарантии качества, производительности,
 пригодности для продажи или для определенной цели.
 В) Также не предоставляется никаких гарантий, созданных в результате
-заключения сделки, использования или продаж. Crystal Project не 
+заключения сделки, использования или продаж. AnmiTali не 
 гарантирует бесперебойную, своевременную и безошибочную работу 
-программного обеспечения. Ни при каких условиях Crystal Project не несут 
+программного обеспечения. Ни при каких условиях AnmiTali не несут 
 ответственность за ущерб или убытки, вызванные использованием или 
 невозможностью использования данного продукта. 
 Г) ПО по данному соглашению предоставляется без явных или 
@@ -68,52 +69,85 @@ https://www.gnu.org/licenses/gpl-3.0.html#license-text
 Если вы не согласны с условиями лицензии,
 немедленно прекратите использование данного ПО!
 
-Дополнение: Программа установки .epf приложений "AppInstaller", также 
+Дополнение: Программа установки .apg приложений еще в разработке, также 
 распространяется по лицензии GNU General Public License 3.0.
 
 Разработчики:
-Игнатьев Илья; Савин Ярослав; Чакилев Арсений
-Особая благодарность за помощь в работе над "AppInstaller" и программой установки:
-Егору Петрухину aka Linux_Tester`
+Игнатьев Илья; Савин Ярослав; Чакилев Арсений (В nasOS-Installer и за идею) и группа разработчиков AnmiTali
 const Licenceen = `License Agreement!
 
-Hello, thank you for choosing ElyzionOS.
-This product is distributed under the license
+Hello, thank you for choosing NurOS.
+This product is distributed under license
 GNU General Public License 3.0
 You can read more details here:
 https://www.gnu.org/licenses/gpl-3.0.html#license-text
 
-License agreement for Crystal Project products:
-(Notepad, Calculator, Elyzion Player, ESecurity Antivirus Software, KeyGen Password Generator)
+License agreement for DeltaUI products:
+(Calculator, beta version of OpenSerfing Browser)
 Please read the terms of this license agreement.
-By using the software products Crystal,
+Using AnmiTali DeltaUI software products,
 You agree that:
-A) The program is closed source and you may not modify it or 
+A) The Program is open source and you have the right to modify or
 modify it in any way.
-B) The Program is provided "as is", without warranty, express or implied, or by law.
-implied or statutory, 
+B) The Program is provided "as is", without warranty, express or
+implied, or statutory,
 including, but not limited to, warranties of quality, performance,
-merchantability, or fitness for a particular purpose.
-B) Nor are any warranties created as a result of the
-transaction, use or sale. Crystal Project does not 
-warrant the uninterrupted, timely or error-free operation of the 
-of the software. In no event shall Crystal Project be liable 
-responsibility for any damage or loss caused by the use or 
-inability to use this product. 
-D) The software under this agreement is provided without express or 
-implied warranties of non-infringement, and the developer makes no warranty of non-infringement of any patents, patents, or other intellectual property rights. 
-no warranty of non-infringement of any patents, copyrights, trade
-trade secrets or other proprietary rights.
+merchantability or fitness for a particular purpose.
+C) There are also no guarantees created as a result
+of the transaction, use or sales. AnmiTali does not
+guarantee the smooth, timely and error-free operation
+of the software. Under no circumstances will
+AnmiTali be liable for damages or losses caused by the use or 
+the inability to use this product. 
+D) The software under this agreement is provided without express or
+implied warranties of non-infringement, and the developer does not
+guarantee non-infringement of any patents, copyrights, trade
+secrets or other proprietary rights.
 If you do not agree to the terms of the license,
-stop using this software immediately!
+immediately stop using this software!
 
-Addendum: The .epf application installer "AppInstaller" is also licensed under the GNU General Public License. 
-is also distributed under the GNU General Public License 3.0.
+Addition: The .apg application installer is still in development, and is also
+distributed under the GNU General Public License 3.0.
 
 Developers:
-Ilya Ignatyev; Yaroslav Savin; Arseny Chakilev
-Special thanks for help with "AppInstaller" and the installer:
-Egor Petrukhin aka Linux_Tester`
+Ignatiev Ilya; Savin Yaroslav; Chakilev Arseny (In nasOS-Installer and for the idea) and the AnmiTali development team 
+const Licencekz = `Лицензиялық келісім!
+
+Сәлеметсіз бе, NurOS таңдағаныңыз үшін рахмет.
+Бұл өнім лицензия бойынша таратылады
+GNU General Public License 3.0
+Толығырақ мына жерден оқи аласыз:
+https://www.gnu.org/licenses/gpl-3.0.html#license-text
+
+Deltaui өнімдеріне арналған лицензиялық келісім:
+(Калькулятор, openserfing браузерінің бета нұсқасы)
+Осы лицензиялық келісімнің шарттарымен танысыңыз.
+AnmiTali deltaui бағдарламалық өнімдерін пайдалану,
+Сіз бұған келісесіз:
+А) бағдарлама ашық көзі болып табылады және сіз оны өзгертуге құқығыңыз бар немесе 
+қалай болса да өзгерту керек.
+Б) бағдарлама "сол күйінде", кепілдік міндеттемелерінсіз, анық немесе
+көзделген немесе заңнамада көзделген, 
+оның ішінде, бірақ онымен шектелмей, сапа кепілдігі, өнімділік,
+сатуға немесе белгілі бір мақсатқа жарамдылық.
+В) нәтижесінде жасалған кепілдіктер де берілмейді
+мәміле жасау, пайдалану немесе сату. AnmiTali емес 
+үздіксіз, уақтылы және қатесіз жұмыс істеуге кепілдік береді 
+бағдарламалық қамтамасыз ету. Ешқандай жағдайда AnmiTali көтермейді 
+пайдаланудан туындаған залал немесе залал үшін жауапкершілік немесе 
+бұл өнімді пайдалану мүмкін .стігі. 
+Г) осы Келісім бойынша айқын немесе 
+бұзушылықтар туралы болжамды кепілдіктер жоқ және әзірлеуші бермейді 
+кез келген патенттерді, авторлық құқықтарды, сауда құқықтарын бұзбау туралы кепілдіктер
+құпиялар немесе басқа меншік құқықтары.
+Егер сіз лицензия шарттарымен келіспесеңіз,
+осы бағдарламалық жасақтаманы пайдалануды дереу тоқтатыңыз!
+
+Қосымша: орнату бағдарламасы .APG қосымшалары әлі әзірленуде, сонымен қатар 
+GNU General Public License 3.0 лицензиясы бойынша таратылады.
+
+Әзірлеушілер:
+Игнатьев Илья; Савин Ярослав; Чакилев Арсений (nasOS-Installer-де және идея үшін) және AnmiTali әзірлеушілер тобы
 
 func showmenu(elem int, menu []string, title string) {
 	fmt.Printf("\033c")
@@ -127,11 +161,12 @@ func showmenu(elem int, menu []string, title string) {
 		}
 	}
 }
+
 func selectlang(language string) string {
 	// logo()
 	title := welcomeru
 	item := 0
-	menu := []string{"Русский", "English"}
+	menu := []string{"Русский", "English", "Қазақша"}
 	showmenu(item, menu, title)
 	keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 
@@ -149,7 +184,10 @@ func selectlang(language string) string {
 			} else {
 				title = welcomeen
 				language = "en"
-			}
+			
+   			} else {
+      				title = welcomekz
+	  			language = "kz"
 
 			showmenu(item, menu, title)
 
@@ -166,7 +204,10 @@ func selectlang(language string) string {
 			} else {
 				title = welcomeen
 				language = "en"
-			}
+			
+			} else {
+      				title = welcomekz
+	  			language = "kz"
 			showmenu(item, menu, title)
 		case keys.Enter:
 			switch item {
@@ -196,7 +237,9 @@ func showLicense(language string) {
 	} else {
 		title = Licenceen
 		menu = []string{"Do not accept", "Accept"}
-	}
+	} else {
+		title = Licencekz
+		menu = []string{"Бас тарту", "Қабылдау"}
 	item := 0
 
 	showmenu(item, menu, title)
@@ -262,7 +305,11 @@ func partiton(language string) string {
 		title = "Select disk drive for partitioning"
 		waiter = "Please wait 20 seconds."
 
-	}
+	} else {
+ 		if language == "kz" {
+		title = "Белгілеу үшін дискіні таңдаңыз"
+		waiter = "20 секунд күтіңіз."
+
 	_ = title
 	devices, _ := filepath.Glob("/dev/[sS]d[a-zA-Z]")
 
@@ -404,6 +451,9 @@ func partsel(language string, instdrive string) string {
 	} else {
 
 		title = "Select partition for installation system"
+	} else {
+
+		title = "Орнату жүйесі үшін бөлімді таңдаңыз"
 	}
 	drive := ""
 	menu := devices
